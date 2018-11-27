@@ -2,7 +2,7 @@ package com.city.weather.web.api;
 
 import com.city.weather.web.config.SiteProperties;
 import io.netty.channel.ChannelOption;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,14 +12,10 @@ import reactor.netty.http.client.HttpClient;
  * WebClient connections settings
  */
 @Component
+@RequiredArgsConstructor
 public class WebClientApi {
 
     private final SiteProperties properties;
-
-    @Autowired
-    public WebClientApi(SiteProperties properties) {
-        this.properties = properties;
-    }
 
     WebClient createWebClient() {
         return this.createWebClient(properties.getTimeout());

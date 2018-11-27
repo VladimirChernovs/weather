@@ -7,7 +7,7 @@ import com.city.weather.domain.entities.Weather;
 import com.city.weather.domain.repositories.CityRepository;
 import com.city.weather.utl.exeptions.CityExistException;
 import com.city.weather.web.api.OpenWeatherApi;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -27,16 +27,11 @@ import static reactor.core.publisher.Mono.just;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CityService {
 
     private final CityRepository cityRepository;
     private final OpenWeatherApi openWeatherApi;
-
-    @Autowired
-    public CityService(CityRepository cityRepository, OpenWeatherApi openWeatherApi) {
-        this.cityRepository = cityRepository;
-        this.openWeatherApi = openWeatherApi;
-    }
 
     @Transactional(readOnly = true)
     public Mono<City> findCity(Mono<CityDTO> cityDtoMono) {

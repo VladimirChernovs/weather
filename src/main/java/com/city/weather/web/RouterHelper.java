@@ -6,8 +6,7 @@ import com.city.weather.domain.entities.Weather;
 import com.city.weather.services.CityService;
 import com.city.weather.web.api.OpenWeatherApi;
 import com.city.weather.web.config.RequestHandlerConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -20,19 +19,12 @@ import java.util.Optional;
 import static reactor.core.publisher.Mono.just;
 
 @Service
-@CacheConfig(cacheNames = "WeatherCache")
+@RequiredArgsConstructor
 public class RouterHelper {
 
     private final CityService cityService;
     private final OpenWeatherApi openWeatherApi;
     private final RequestHandlerConfig requestHandlerConfig;
-
-    @Autowired
-    public RouterHelper(OpenWeatherApi openWeatherApi, CityService cityService, RequestHandlerConfig requestHandlerConfig) {
-        this.openWeatherApi = openWeatherApi;
-        this.cityService = cityService;
-        this.requestHandlerConfig = requestHandlerConfig;
-    }
 
     public Mono<ServerResponse> getCityWeather(ServerRequest request) {
 
