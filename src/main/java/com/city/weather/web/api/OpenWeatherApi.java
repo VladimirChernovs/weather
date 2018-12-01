@@ -4,12 +4,16 @@ import com.city.weather.domain.dbos.CityWeatherDTO;
 import com.city.weather.domain.dbos.WeatherDTO;
 import com.city.weather.web.config.SiteProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * API for weather site
@@ -35,10 +39,15 @@ public class OpenWeatherApi {
                 .get()
                 .uri(builder -> builder.scheme("http")
                         .host(properties.getHost()).path(properties.getPath())
-                        .queryParam("q", city)
+                        .queryParam("q", this.urlParamDecoder(city))
                         .queryParam("appid", properties.getAppid())
                         .queryParam("mode", media)
                         .build());
+    }
+
+    @SneakyThrows
+    private String urlParamDecoder(String city) {
+            return URLEncoder.encode(city, StandardCharsets.UTF_8.toString());
     }
 
     public Mono<CityWeatherDTO> inCityMedias(String city) {

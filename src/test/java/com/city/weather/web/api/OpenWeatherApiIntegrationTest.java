@@ -20,7 +20,7 @@ public class OpenWeatherApiIntegrationTest {
     @Test
     public void inCity() {
 
-        final Mono<ServerResponse> serverResponseMono = openWeatherApi.inCity("Moscow", "json");
+        final Mono<ServerResponse> serverResponseMono = openWeatherApi.inCity("New York", "json");
 
         StepVerifier
                 .create(serverResponseMono)
