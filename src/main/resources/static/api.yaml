@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Weather api
+  license:
+    name: APL2
+basePath: /api
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /cities:
+    get:
+      tags:
+      - Cities
+      description: Get all stored city's weathers
+      responses:
+        '200':
+          description: Returns all stored city's weathers
+  /city:
+    get:
+      tags:
+        - Cities
+      description: Get sity's weather
+      responses:
+        '200':
+          description: Returns sity's weather
+      parameters:
+        - name: name
+          description: The city
+          in: query
+          required: true
+          type: string
+    post:
+      tags:
+      - Cities
+      description: Add city specified in the request in the list
+      parameters:
+      - name: name
+        description: The city
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        '200':
+          description: Echo the added city
+    delete:
+      tags:
+        - Cities
+      description: Delite sity from the list
+      responses:
+        '200':
+          description: Echo deleted city
+      parameters:
+        - name: name
+          description: The city to delete
+          in: query
+          required: true
+          type: string
+definitions:
+  City:
+    required:
+    - name
+    properties:
+      name:
+        type: string
+    example:
+      name: New
