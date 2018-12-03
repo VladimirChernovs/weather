@@ -1,8 +1,12 @@
-package com.chernov.weather.cities
+package com.chernov.weather.services
 
+import com.chernov.weather.web.cities.City
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
+@Service
 class CityService {
 
     private var cities = mutableListOf(

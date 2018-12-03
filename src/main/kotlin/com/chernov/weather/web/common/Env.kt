@@ -1,4 +1,4 @@
-package com.chernov.weather.common
+package com.chernov.weather.web.common
 
 import io.github.cdimascio.dotenv.dotenv
 import io.github.cdimascio.swagger.Validate

@@ -1,15 +1,21 @@
-package com.chernov.weather
+package com.chernov.weather.web
 
-import com.chernov.weather.cities.CityHandler
-import com.chernov.weather.common.internalServerError
+import com.chernov.weather.web.cities.CityHandler
+import com.chernov.weather.web.common.internalServerError
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.MediaType.TEXT_HTML
+import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.server.router
 import java.net.URI
 
+@Configuration
 class Routes(private val cityHandler: CityHandler) {
 
+    @Bean
     fun router() = router {
         accept(TEXT_HTML).nest {
             GET("/") { permanentRedirect(URI("index.html")).build() }

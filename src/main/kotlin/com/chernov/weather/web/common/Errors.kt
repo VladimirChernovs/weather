@@ -1,4 +1,4 @@
-package com.chernov.weather.common
+package com.chernov.weather.web.common
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerResponse

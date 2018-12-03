@@ -1,12 +1,15 @@
-package com.chernov.weather.cities
+package com.chernov.weather.web.cities
 
-import com.chernov.weather.common.validate
+import com.chernov.weather.services.CityService
+import com.chernov.weather.web.common.validate
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
 
+@Component
 class CityHandler(val cityService: CityService) {
 
     fun findAll(req: ServerRequest): Mono<ServerResponse> = validate
