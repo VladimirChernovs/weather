@@ -1,4 +1,4 @@
-package com.city.weather.utl.exeptions;
+package com.city.weather.services;
 
 public class CityExistException extends RuntimeException {
     public CityExistException() {

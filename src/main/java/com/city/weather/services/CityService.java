@@ -5,7 +5,6 @@ import com.city.weather.domain.dbos.CityWeatherDTO;
 import com.city.weather.domain.entities.City;
 import com.city.weather.domain.entities.Weather;
 import com.city.weather.domain.repositories.CityRepository;
-import com.city.weather.utl.exeptions.CityExistException;
 import com.city.weather.web.api.OpenWeatherApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
