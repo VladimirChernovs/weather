@@ -1,17 +1,17 @@
-package com.chernov.weather.web
+package com.chernov.weather.web.cities
 
-import com.chernov.weather.web.cities.CityHandler
 import com.chernov.weather.web.common.internalServerError
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.MediaType.TEXT_HTML
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.server.router
 import java.net.URI
 
+/**
+ *  REST requests mapping
+ */
 @Configuration
 class Routes(private val cityHandler: CityHandler) {
 
@@ -30,11 +30,11 @@ class Routes(private val cityHandler: CityHandler) {
         }
         resources("/**", ClassPathResource("static/"))
     }
-    .filter { request, next ->
-        try {
-            next.handle(request)
-        } catch (ex: Exception) {
-            internalServerError(ex)
-        }
-    }
+            .filter { request, next ->
+                try {
+                    next.handle(request)
+                } catch (ex: Exception) {
+                    internalServerError(ex)
+                }
+            }
 }
