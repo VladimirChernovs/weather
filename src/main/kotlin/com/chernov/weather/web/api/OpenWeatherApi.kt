@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 /**
  * API for weather site
@@ -16,36 +15,30 @@ import java.nio.charset.StandardCharsets
 @Component
 class OpenWeatherApi(private val properties: SiteProperties, private val webClientApi: WebClientApi) {
 
-    fun inCity(city: String, media: String): Mono<ServerResponse> {
+    fun inCity(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
+            .exchange()
+            .flatMap { mapper: ClientResponse ->
+                ServerResponse.status(mapper.statusCode())
+                        .headers { c ->
+                            mapper.headers().asHttpHeaders()
+                                    .forEach { key, value -> c[key] = value }
+                        }
+                        .body(mapper.bodyToMono(String::class.java), String::class.java)
+            }
 
-        return getUri(city, media)
-                .exchange()
-                .flatMap { mapper: ClientResponse ->
-                    ServerResponse.status(mapper.statusCode())
-                            .headers { c -> mapper.headers().asHttpHeaders()
-                                    .forEach { key, value -> c.put(key, value) }
-                            }
-                            .body(mapper.bodyToMono(String::class.java), String::class.java)
-                }
-    }
-
-    private fun getUri(city: String, media: String): WebClient.RequestHeadersSpec<*> {
-        return webClientApi!!.createWebClient()
-                .get()
-                .uri { builder ->
-                    builder.scheme("http")
-                            .host(properties.host).path(properties.path!!)
-                            .queryParam("q", this.urlParamDecoder(city))
-                            .queryParam("appid", properties.appid)
-                            .queryParam("mode", media)
-                            .build()
-                }
-    }
-
-//    @SneakyThrows
-    private fun urlParamDecoder(city: String): String {
-        return URLEncoder.encode(city, StandardCharsets.UTF_8.toString())
-    }
+    private fun getUri(city: String, media: String): WebClient.RequestHeadersSpec<*> = webClientApi.getWebClient()
+            .get()
+            .uri {
+                UriComponentsBuilder.newInstance()
+                        .scheme("http")
+                        .host(properties.host).path(properties.path!!)
+                        .queryParam("q", city)
+                        .queryParam("appid", properties.appid)
+                        .queryParam("mode", media)
+                        .encode()
+                        .build()
+                        .toUri()
+            }
 
     fun inCityMedias(city: String): Mono<CityWeatherDTO> {
 
