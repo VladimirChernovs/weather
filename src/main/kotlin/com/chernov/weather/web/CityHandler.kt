@@ -1,8 +1,6 @@
 package com.chernov.weather.web
 
 import com.chernov.weather.domain.dto.CityDTO
-import com.chernov.weather.domain.entities.City
-import com.chernov.weather.domain.entities.Weather
 import com.chernov.weather.services.CityService
 import com.chernov.weather.services.OpenWeatherService
 import com.chernov.weather.web.common.validate
@@ -13,7 +11,6 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
-import java.time.LocalDateTime
 
 /**
  *  Handle requests from router
@@ -21,39 +18,34 @@ import java.time.LocalDateTime
 @Component
 class CityHandler(private val openWeatherService: OpenWeatherService, private val cityService: CityService) {
 
-    fun findAll(req: ServerRequest): Mono<ServerResponse> = validate
-            .request(req) {
-                ok().body(cityService.findAll())
-            }
+    fun findAll(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
+        ok().body(cityService.findAll())
+    }
 
-    fun findOne(req: ServerRequest): Mono<ServerResponse> = validate
-            .request(req) {
-                val cityName = getTheNameParameter(req)
-                val cityBody = cityService.findOne(cityName)
-                val mediaType = getMediaType(req)
-                cityBody.flatMap {
-                    ServerResponse.ok()
-                            .contentType(mediaType)
-                            .header("db-update-time", it.updateTime.toString())
-                            .body(cityBody.map { city ->
-                                when (mediaType) {
-                                    MediaType.APPLICATION_XML -> city.weather.xml
-                                    else -> city.weather.json
-                                }
-                            })
-                }.switchIfEmpty(openWeatherService.inCity(cityName, mediaType.subtype))
-            }
+    fun findOne(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
+        val cityName = getTheNameParameter(req)
+        val cityBody = cityService.findOne(cityName)
+        val mediaType = getMediaType(req)
+        cityBody.flatMap {
+            ServerResponse.ok()
+                    .contentType(mediaType)
+                    .header("db-update-time", it.updateTime.toString())
+                    .body(cityBody.map { city ->
+                        when (mediaType) {
+                            MediaType.APPLICATION_XML -> city.weather.xml
+                            else -> city.weather.json
+                        }
+                    })
+        }.switchIfEmpty(openWeatherService.inCity(cityName, mediaType.subtype))
+    }
 
-    fun create(req: ServerRequest) = validate
-            .request(req)
-            .withBody(CityDTO::class.java) { city ->
-                ok().body(cityService.create(City(3, 3, city.name, Weather("json", "xml"), LocalDateTime.now())))
-            }
+    fun create(req: ServerRequest) = validate.request(req).withBody(CityDTO::class.java) {
+        ok().body(cityService.addOne(it))
+    }
 
-    fun deleteOne(req: ServerRequest): Mono<ServerResponse> = validate
-            .request(req) {
-                ok().body(cityService.deleteOne(getTheNameParameter(req)))
-            }
+    fun deleteOne(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
+        ok().body(cityService.deleteOne(getTheNameParameter(req)))
+    }
 
     private fun getTheNameParameter(req: ServerRequest) = req.queryParam("name").get()
 
