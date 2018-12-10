@@ -1,4 +1,4 @@
-package com.chernov.weather.web.api
+package com.chernov.weather.web.common
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties

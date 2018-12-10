@@ -17,19 +17,19 @@ data class City(
         @Id
         @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
         @Column(name = "ID")
-        val id: kotlin.Long
+        val id: Long
         ,
         @Column(name = "CITY_ID", unique = true)
         val cityId: Long
         ,
         @Column(name = "NAME")
-        private val name: String
+        val name: String
         ,
         @Embedded
         val weather: Weather
         ,
         @UpdateTimestamp
         @Column(name = "TIME")
-        val updateDateTime: LocalDateTime
+        val updateTime: LocalDateTime
 )
 

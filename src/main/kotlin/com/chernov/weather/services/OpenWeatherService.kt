@@ -1,8 +1,11 @@
-package com.chernov.weather.web.api
+package com.chernov.weather.services
 
 import com.chernov.weather.domain.dto.CityWeatherDTO
 import com.chernov.weather.domain.dto.WeatherDTO
-import org.springframework.stereotype.Component
+import com.chernov.weather.web.common.SiteProperties
+import com.chernov.weather.web.common.WebClientApi
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -12,9 +15,11 @@ import reactor.core.publisher.Mono
 /**
  * API for weather site
  */
-@Component
-class OpenWeatherApi(private val properties: SiteProperties, private val webClientApi: WebClientApi) {
+@Service
+class OpenWeatherService(private val properties: SiteProperties,
+                         private val webClientApi: WebClientApi) {
 
+    @Cacheable("weather")
     fun inCity(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
             .exchange()
             .flatMap { mapper: ClientResponse ->
@@ -24,6 +29,7 @@ class OpenWeatherApi(private val properties: SiteProperties, private val webClie
                                     .forEach { key, value -> c[key] = value }
                         }
                         .body(mapper.bodyToMono(String::class.java), String::class.java)
+                        .cache()
             }
 
     private fun getUri(city: String, media: String): WebClient.RequestHeadersSpec<*> = webClientApi.getWebClient()

@@ -1,5 +1,6 @@
-package com.chernov.weather.web.cities
+package com.chernov.weather.config
 
+import com.chernov.weather.web.CityHandler
 import com.chernov.weather.web.common.internalServerError
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

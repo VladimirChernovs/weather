@@ -1,4 +1,4 @@
-package com.chernov.weather.web.api
+package com.chernov.weather.web.common
 
 import io.netty.channel.ChannelOption
 import org.springframework.http.client.reactive.ReactorClientHttpConnector

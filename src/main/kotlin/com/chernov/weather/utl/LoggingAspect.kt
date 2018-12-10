@@ -1,4 +1,4 @@
-package com.chernov.weather.config
+package com.chernov.weather.utl
 
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
