@@ -2,42 +2,34 @@ package com.chernov.weather.services
 
 import com.chernov.weather.domain.dto.CityDTO
 import com.chernov.weather.domain.entities.City
-import com.chernov.weather.domain.repositories.CityRepository
-import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.core.publisher.Mono.empty
-import reactor.core.publisher.Mono.just
 
-@Service
-class CityService(private val cityRepository: CityRepository) {
+/**
+ *  Abstraction for all types of City's service repositories
+ *
+ *  Inserts-Gets-Deletes cities in the list
+ */
+interface CityService {
 
-    fun findAll(): Flux<City> = Flux.fromIterable(cityRepository.findAll())
+    /**
+     *  Find all saved in the list cities
+     */
+    fun findAll(): Flux<City>
 
-    fun findOne(name: String): Mono<City> = try {
-        just(cityRepository.findByName(name))
-    } catch (e: EmptyResultDataAccessException) {
-        empty()
-    }
+    /**
+     *  Returns the city of the given [name] from the saved list
+     */
+    fun findOne(name: String): Mono<City>
 
-    fun addOne(cityDto: CityDTO): Mono<City> {
-        val cityName = cityDto.name
-        if (cityRepository.existsCityByName(cityName)) throw CityExistException()
-        return just(cityRepository.save(City(name = cityName)))
-    }
+    /**
+     *  Inserts the city in the saved list from [cityDto] json object
+     */
+    fun addOne(cityDto: CityDTO): Mono<City>
 
-    fun deleteOne(name: String): Mono<City> {
-        try {
-            val city = cityRepository.findByName(name)
-            cityRepository.delete(city)
-            return just(city)
-        } catch (e: EmptyResultDataAccessException) {
-            throw CityNotExistException()
-        }
-    }
+    /**
+     *  Deletes the city of the given [name] from the saved list
+     */
+    fun deleteOne(name: String): Mono<City>
+
 }
-
-class CityExistException : RuntimeException("City already exist!")
-class CityNotExistException : IllegalArgumentException("Nothing to delete, city not found!")
-

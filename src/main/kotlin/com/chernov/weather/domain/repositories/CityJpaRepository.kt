@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface CityRepository : JpaRepository<City, Long> {
+interface CityJpaRepository : JpaRepository<City, Long> {
     fun findByCityId(id: Long?): Optional<City>
     fun findByName(name: String): City
     fun existsCityByName(city: String): Boolean
