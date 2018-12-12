@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono.just
  *
  *  Inserts-Gets-Deletes cities in the SQL's Data Bases
  */
-class CityServiceImp(private val cityRepository: CityJpaRepository) : CityService {
+class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CityService {
 
     /**
      *  Find all saved in the list cities

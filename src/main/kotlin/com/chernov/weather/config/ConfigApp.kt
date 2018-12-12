@@ -2,7 +2,7 @@ package com.chernov.weather.config
 
 import com.chernov.weather.domain.repositories.CityJpaRepository
 import com.chernov.weather.services.CityService
-import com.chernov.weather.services.CityServiceImp
+import com.chernov.weather.services.CityServiceJpaImp
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 class ConfigApp {
 
     @Autowired
-    private val cityRepository: CityJpaRepository? = null
+    private lateinit var cityRepository: CityJpaRepository
 
     @Bean
-    fun cityService(): CityService = CityServiceImp(cityRepository!!)
+    fun cityService(): CityService = CityServiceJpaImp(cityRepository)
 
 }
