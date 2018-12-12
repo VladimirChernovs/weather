@@ -32,4 +32,9 @@ interface CityService {
      */
     fun deleteOne(name: String): Mono<City>
 
+    /**
+     *  Update weather for the city
+     */
+    fun updateCity(city: City)
+
 }

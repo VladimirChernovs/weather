@@ -4,6 +4,7 @@ import com.chernov.weather.domain.dto.CityDTO
 import com.chernov.weather.domain.entities.City
 import com.chernov.weather.domain.repositories.CityJpaRepository
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Mono.empty
@@ -14,16 +15,19 @@ import reactor.core.publisher.Mono.just
  *
  *  Inserts-Gets-Deletes cities in the SQL's Data Bases
  */
+@Transactional
 class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CityService {
 
     /**
      *  Find all saved in the list cities
      */
+    @Transactional(readOnly = true)
     override fun findAll(): Flux<City> = Flux.fromIterable(cityRepository.findAll())
 
     /**
      *  Returns the city of the given [name] from the saved list
      */
+    @Transactional(readOnly = true)
     override fun findOne(name: String): Mono<City> = try {
         just(cityRepository.findByName(name))
     } catch (e: EmptyResultDataAccessException) {
@@ -51,5 +55,13 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
             throw CityNotExistException()
         }
     }
+
+    /**
+     *  Update weather for the city
+     */
+    override fun updateCity(city: City) {
+        cityRepository.save(city)
+    }
+
 }
 
