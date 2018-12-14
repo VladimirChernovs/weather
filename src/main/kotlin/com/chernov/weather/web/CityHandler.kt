@@ -2,7 +2,7 @@ package com.chernov.weather.web
 
 import com.chernov.weather.domain.dto.CityDTO
 import com.chernov.weather.services.CityService
-import com.chernov.weather.services.OpenWeatherService
+import com.chernov.weather.services.WeatherService
 import com.chernov.weather.web.common.validate
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
  *  Handle requests from router
  */
 @Component
-class CityHandler(private val openWeatherService: OpenWeatherService, private val cityService: CityService) {
+class CityHandler(private val weatherService: WeatherService, private val cityService: CityService) {
 
     fun findAll(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         ok().body(cityService.findAll())
@@ -36,7 +36,7 @@ class CityHandler(private val openWeatherService: OpenWeatherService, private va
                             else -> city.weather.json
                         }
                     })
-        }.switchIfEmpty(openWeatherService.inCity(cityName, mediaType.subtype))
+        }.switchIfEmpty(weatherService.inCity(cityName, mediaType.subtype))
     }
 
     fun create(req: ServerRequest) = validate.request(req).withBody(CityDTO::class.java) {

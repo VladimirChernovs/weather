@@ -59,8 +59,10 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
     /**
      *  Update weather for the city
      */
-    override fun updateCity(city: City) {
-        cityRepository.save(city)
+    override fun updateCity(city: Mono<City>) {
+        city.subscribe {
+            cityRepository.save(it)
+        }
     }
 
 }

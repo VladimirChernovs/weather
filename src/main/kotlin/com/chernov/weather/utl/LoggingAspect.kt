@@ -73,6 +73,7 @@ class LoggingAspect(private val env: Environment) {
                 log.debug("Exit: {}.{}() with result = {}", joinPoint.signature.declaringTypeName,
                         joinPoint.signature.name, result)
             }
+
             return result
         } catch (e: IllegalArgumentException) {
             log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.args),

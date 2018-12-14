@@ -2,6 +2,8 @@ package com.chernov.weather.services
 
 import com.chernov.weather.domain.dto.CityWeatherDTO
 import com.chernov.weather.domain.dto.WeatherDTO
+import com.chernov.weather.domain.entities.City
+import com.chernov.weather.domain.entities.Weather
 import com.chernov.weather.web.common.SiteProperties
 import com.chernov.weather.web.common.WebClientApi
 import org.springframework.cache.annotation.Cacheable
@@ -16,8 +18,8 @@ import reactor.core.publisher.Mono
  * API for weather site
  */
 @Service
-class OpenWeatherService(private val properties: SiteProperties,
-                         private val webClientApi: WebClientApi) {
+class WeatherService(private val properties: SiteProperties,
+                     private val webClientApi: WebClientApi) {
 
     @Cacheable("weather")
     fun inCity(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
@@ -46,6 +48,17 @@ class OpenWeatherService(private val properties: SiteProperties,
                         .toUri()
             }
 
+    fun inMedias(city: City): Mono<City> {
+        val retrieve = getUri(city.name, "json").retrieve()
+        val json = retrieve.bodyToMono(String::class.java)
+        val xml = getUri(city.name, "xml").retrieve().bodyToMono(String::class.java)
+        val zip = Mono.zip(json, xml)
+        return zip.map { n ->
+            city.copy(1, weather = Weather(n.t1, n.t2))
+        }
+    }
+
+    // TODO
     fun inCityMedias(city: String): Mono<CityWeatherDTO> {
 
         val retrieve = getUri(city, "json").retrieve()

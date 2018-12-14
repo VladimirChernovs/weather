@@ -35,6 +35,6 @@ interface CityService {
     /**
      *  Update weather for the city
      */
-    fun updateCity(city: City)
+    fun updateCity(city: Mono<City>)
 
 }
