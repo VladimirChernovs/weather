@@ -11,7 +11,6 @@ import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.util.*
 
-
 /**
  * Aspect for logging execution of service and repository Spring components.
  */
@@ -24,9 +23,9 @@ class LoggingAspect(private val env: Environment) {
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.
      */
-    @Pointcut("within(@org.springframework.stereotype.Repository *)" +
+    @Pointcut("within(@org.springframework.context.annotation.Configuration *)" +
             " || within(@org.springframework.stereotype.Service *)" +
-            " || within(@org.springframework.web.bind.annotation.RestController *)")
+            " || within(@org.springframework.stereotype.Component *)")
     fun springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -34,7 +33,7 @@ class LoggingAspect(private val env: Environment) {
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
-    @Pointcut("within(com.chernov.weather.domain.repositories..*)" +
+    @Pointcut("within(com.chernov.weather.config..*)" +
             " || within(com.chernov.weather.services..*)" +
             " || within(com.chernov.weather.web..*)")
     fun applicationPackagePointcut() {
@@ -64,23 +63,19 @@ class LoggingAspect(private val env: Environment) {
     @Throws(Throwable::class)
     fun logAround(joinPoint: ProceedingJoinPoint): Any {
         if (log.isDebugEnabled) {
-            log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.signature.declaringTypeName,
-                    joinPoint.signature.name, Arrays.toString(joinPoint.args))
-        }
-        try {
-            val result = joinPoint.proceed()
-            if (log.isDebugEnabled) {
+            log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.signature.declaringTypeName, joinPoint.signature.name, Arrays.toString(joinPoint.args))
+            try {
+                val result = joinPoint.proceed()
                 log.debug("Exit: {}.{}() with result = {}", joinPoint.signature.declaringTypeName,
                         joinPoint.signature.name, result)
+                result?.let { return it }
+            } catch (e: IllegalArgumentException) {
+                log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.args),
+                        joinPoint.signature.declaringTypeName, joinPoint.signature.name)
+
+                throw e
             }
-
-            return result
-        } catch (e: IllegalArgumentException) {
-            log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.args),
-                    joinPoint.signature.declaringTypeName, joinPoint.signature.name)
-
-            throw e
         }
-
+        return Any()
     }
 }

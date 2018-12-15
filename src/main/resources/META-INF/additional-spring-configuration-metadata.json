@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "update.delay",
+      "type": "java.lang.String",
+      "description": "UpdateService's delay for update."
+    },
+    {
+      "name": "site.host",
+      "type": "java.lang.String",
+      "description": "Site."
+    },
+    {
+      "name": "site.path",
+      "type": "java.lang.String",
+      "description": "Path on site."
+    },
+    {
+      "name": "site.appid",
+      "type": "java.lang.String",
+      "description": "Registered app id."
+    },
+    {
+      "name": "site.timeout",
+      "type": "java.lang.String",
+      "description": "timeout for response from the site."
+    }
+  ]
+}

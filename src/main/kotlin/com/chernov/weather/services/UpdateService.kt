@@ -8,13 +8,8 @@ class UpdateService(private val cityService: CityService,
                     private val weatherService: WeatherService) {
     @Scheduled(fixedDelayString = "\${update.delay}")
     fun scheduler() {
-        try {
-            cityService.findAll().subscribe { city ->
-                cityService.updateCity(weatherService.inMedias(city))
-            }
-        } catch (e: Exception) {
-            //TODO
-            println(e)
+        cityService.findAll().subscribe { city ->
+            cityService.updateCity(weatherService.inMedias(city))
         }
     }
 }

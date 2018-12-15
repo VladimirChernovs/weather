@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 @ConfigurationProperties(prefix = "site")
-data class SiteProperties (
-    var appid: String? = null,
-    var host: String? = null,
-    var path: String? = null,
+class SiteProperties {
+    lateinit var appid: String
+    lateinit var host: String
+    lateinit var path: String
     var timeout: Int = 0
-)
+}
 

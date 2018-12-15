@@ -4,6 +4,7 @@ import com.chernov.weather.domain.dto.CityDTO
 import com.chernov.weather.domain.entities.City
 import com.chernov.weather.domain.repositories.CityJpaRepository
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono.just
  *
  *  Inserts-Gets-Deletes cities in the SQL's Data Bases
  */
+@Component
 @Transactional
 class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CityService {
 

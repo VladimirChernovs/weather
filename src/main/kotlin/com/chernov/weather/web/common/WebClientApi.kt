@@ -12,11 +12,11 @@ import reactor.netty.http.client.HttpClient
 @Component
 class WebClientApi(private val properties: SiteProperties) {
 
-    fun getWebClient(timeout: Int = properties.timeout): WebClient {
+    fun getWebClient(): WebClient {
 
         val httpClient = HttpClient.create()
                 .tcpConfiguration { client ->
-                    client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
+                    client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, properties.timeout)
                 }
 
         return WebClient.builder()

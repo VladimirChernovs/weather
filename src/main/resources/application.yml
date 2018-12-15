@@ -1,5 +1,6 @@
+server.port: 8080
 
-update.delay: 7000
+update.delay: 27000
 
 logging:
   level:
@@ -12,7 +13,9 @@ spring:
     caffeine:
       spec: maximumSize=100, expireAfterWrite=25s
   jpa:
-    hibernate.ddl-auto: create-drop
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 #        hibernate.ddl-auto: none
 
 site:
@@ -20,6 +23,4 @@ site:
   path: data/2.5/weather
   appid: 8cb969812b8e2b288af6925d650b2751
   timeout: 1000
-
-
 
