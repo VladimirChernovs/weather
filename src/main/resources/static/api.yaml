@@ -34,11 +34,16 @@ paths:
           in: query
           required: true
           type: string
+          default: "New York"
         - name: Content-Type
           description: The media type of response
           in: header
           required: false
           type: string
+          enum:
+            - application/xml
+            - application/json
+            - application/json;charset=UTF-8
     post:
       tags:
       - Cities
@@ -66,6 +71,7 @@ paths:
           in: query
           required: true
           type: string
+          default: "New York"
   /city/{name}:
     get:
       tags:
@@ -80,6 +86,17 @@ paths:
           in: path
           required: true
           type: string
+          default: "New York"
+        - name: Content-Type
+          description: The media type of response
+          in: header
+          required: false
+          type: string
+          enum:
+            - application/xml
+            - application/json
+            - application/json;charset=UTF-8
+
 definitions:
   City:
     required:
