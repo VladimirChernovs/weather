@@ -7,7 +7,6 @@ info:
 basePath: /api
 schemes:
 - http
-- https
 consumes:
 - application/json
 produces:
@@ -35,6 +34,11 @@ paths:
           in: query
           required: true
           type: string
+        - name: Content-Type
+          description: The media type of response
+          in: header
+          required: false
+          type: string
     post:
       tags:
       - Cities
@@ -47,7 +51,7 @@ paths:
         schema:
           $ref: '#/definitions/City'
       responses:
-        '200':
+        '201':
           description: Echo the added city
     delete:
       tags:
@@ -62,6 +66,20 @@ paths:
           in: query
           required: true
           type: string
+  /city/{name}:
+    get:
+      tags:
+        - Cities
+      description: Get sity's weather
+      responses:
+        '200':
+          description: Returns sity's weather
+      parameters:
+        - name: name
+          description: The city
+          in: path
+          required: true
+          type: string
 definitions:
   City:
     required:
@@ -70,4 +88,4 @@ definitions:
       name:
         type: string
     example:
-      name: New
+      name: New York

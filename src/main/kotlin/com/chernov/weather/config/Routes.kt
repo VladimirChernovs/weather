@@ -25,6 +25,7 @@ class Routes(private val cityHandler: CityHandler) {
             accept(APPLICATION_JSON).nest {
                 GET("/cities", cityHandler::findAll)
                 GET("/city", cityHandler::findOneByName)
+                GET("/city/{name}", cityHandler::findOneByNamePath)
                 POST("/city", cityHandler::create)
                 DELETE("/city", cityHandler::deleteOne)
             }
