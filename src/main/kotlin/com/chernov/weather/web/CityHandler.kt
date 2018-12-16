@@ -16,12 +16,19 @@ import reactor.core.publisher.Mono
  *  Handle requests from router
  */
 @Component
-class CityHandler(private val weatherService: WeatherService, private val cityService: CityService) {
+class CityHandler(private val weatherService: WeatherService,
+                  private val cityService: CityService) {
 
+    /**
+     *  Get all cities. [req] - server request
+     */
     fun findAll(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         ok().body(cityService.findAll())
     }
 
+    /**
+     *  Get city by name. [req] - server request
+     */
     fun findOne(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         val cityName = getTheNameParameter(req)
         val cityBody = cityService.findOne(cityName)
@@ -39,16 +46,23 @@ class CityHandler(private val weatherService: WeatherService, private val citySe
         }.switchIfEmpty(weatherService.inCity(cityName, mediaType.subtype))
     }
 
+    /**
+     *  Create city by name. [req] - server request
+     */
     fun create(req: ServerRequest) = validate.request(req).withBody(CityDTO::class.java) {
         ok().body(cityService.addOne(it))
     }
 
+    /**
+     *  Delete city by name. [req] - server request
+     */
     fun deleteOne(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         ok().body(cityService.deleteOne(getTheNameParameter(req)))
     }
 
-    private fun getTheNameParameter(req: ServerRequest) = req.queryParam("name").get()
-
+    /**
+     *  Get media type from [req] - server request
+     */
     private fun getMediaType(req: ServerRequest): MediaType {
         val mediaType = req.headers().contentType()
         if (mediaType.isPresent) {
@@ -63,5 +77,7 @@ class CityHandler(private val weatherService: WeatherService, private val citySe
         }
         return MediaType.APPLICATION_JSON
     }
+
+    private fun getTheNameParameter(req: ServerRequest) = req.queryParam("name").get()
 
 }

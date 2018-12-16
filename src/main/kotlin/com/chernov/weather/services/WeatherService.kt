@@ -19,6 +19,11 @@ import reactor.core.publisher.Mono
 class WeatherService(private val properties: SiteProperties,
                      private val webClientApi: WebClientApi) {
 
+    /**
+     *  Get weather from the site
+     *  [city] - city name
+     *  [media] - media type
+     */
     @Cacheable("weather")
     fun inCity(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
             .exchange()
@@ -47,6 +52,9 @@ class WeatherService(private val properties: SiteProperties,
                         .toUri()
             }
 
+    /**
+     *  Get JSON & XML media for the [city] from the site
+     */
     fun inMedias(city: City): Mono<City> {
         val retrieve = getUri(city.name, "json").retrieve()
         val json = retrieve.bodyToMono(String::class.java)
