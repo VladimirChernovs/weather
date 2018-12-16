@@ -11,7 +11,7 @@ import java.net.InetAddress
  *  API uri informer
  */
 @Component
-class AppStartupRunner(private val env: Environment) : ApplicationRunner {
+class AppApiUriInformer(private val env: Environment) : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -25,11 +25,11 @@ class AppStartupRunner(private val env: Environment) : ApplicationRunner {
             log.warn("The host name could not be determined, using `localhost` as fallback")
         }
 
-        log.info("\n----------------------------------------------------------\n\t" +
+        log.info("\n----------------------------------------------------------------------------------------\n\t" +
                 "API for application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}\n\t" +
                 "External: \t{}://{}:{}\n\t" +
-                "Profile(s): \t{}\n----------------------------------------------------------",
+                "Profile(s): \t{}\n----------------------------------------------------------------------------------------",
                 env.getProperty("spring.application.name"),
                 protocol,
                 env.getProperty("server.port"),
