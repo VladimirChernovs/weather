@@ -6,6 +6,7 @@ import com.chernov.weather.domain.repositories.CityJpaRepository
 import org.json.JSONObject
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -40,6 +41,7 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
     /**
      *  Inserts the city in the saved list from [cityDto] json object
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     override fun addOne(cityDto: CityDTO): Mono<City> {
         val cityName = cityDto.name
         if (cityRepository.existsCityByName(cityName)) throw CityExistException()
@@ -49,6 +51,7 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
     /**
      *  Deletes the city of the given [name] from the saved list
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     override fun deleteOne(name: String): Mono<City> {
         try {
             val city = cityRepository.findByName(name)
@@ -62,6 +65,7 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
     /**
      *  Update weather for the city
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     override fun updateCity(city: Mono<City>) {
         city.subscribe {
             if (cityRepository.existsCityByName(it.name)) {
