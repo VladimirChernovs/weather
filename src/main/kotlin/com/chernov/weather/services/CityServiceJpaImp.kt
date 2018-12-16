@@ -29,11 +29,21 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
     override fun findAll(): Flux<City> = Flux.fromIterable(cityRepository.findAll())
 
     /**
-     *  Returns the city of the given [name] from the saved list
+     *  Returns the city of the given [name]
      */
     @Transactional(readOnly = true)
     override fun findOneByName(name: String): Mono<City> = try {
         just(cityRepository.findByName(name))
+    } catch (e: EmptyResultDataAccessException) {
+        empty()
+    }
+
+    /**
+     *  Returns the city of the given [gid]
+     */
+    @Transactional(readOnly = true)
+    override fun findOneByGlobId(gid: Long): Mono<City> = try {
+        just(cityRepository.findByCityId(gid))
     } catch (e: EmptyResultDataAccessException) {
         empty()
     }

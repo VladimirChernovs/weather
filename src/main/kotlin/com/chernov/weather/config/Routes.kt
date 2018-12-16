@@ -26,6 +26,7 @@ class Routes(private val cityHandler: CityHandler) {
                 GET("/cities", cityHandler::findAll)
                 GET("/city", cityHandler::findOneByName)
                 GET("/city/{name}", cityHandler::findOneByNamePath)
+                GET("/city/{gid}", cityHandler::findOneByGlobId)
                 POST("/city", cityHandler::create)
                 DELETE("/city", cityHandler::deleteOne)
             }

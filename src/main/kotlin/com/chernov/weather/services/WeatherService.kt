@@ -25,7 +25,7 @@ class WeatherService(private val properties: SiteProperties,
      *  [media] - media type
      */
     @Cacheable("weather")
-    fun inCity(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
+    fun inCityByName(city: String, media: String): Mono<ServerResponse> = getUri(city, media)
             .exchange()
             .flatMap { mapper: ClientResponse ->
                 ServerResponse.status(mapper.statusCode())
@@ -63,6 +63,10 @@ class WeatherService(private val properties: SiteProperties,
         return zip.map { n ->
             city.copy(weather = Weather(n.t1, n.t2))
         }
+    }
+
+    fun inCityByGlobId(gid: String, subtype: String): Mono<out ServerResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

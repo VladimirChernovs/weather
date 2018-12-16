@@ -96,6 +96,30 @@ paths:
             - application/xml
             - application/json
             - application/json;charset=UTF-8
+  /city/{glob-id}:
+    get:
+      tags:
+        - Cities
+      description: Get sity's weather by Global Id
+      responses:
+        '200':
+          description: Returns sity's weather
+      parameters:
+        - name: glob-id
+          description: The city's Global Id
+          in: path
+          required: true
+          type: string
+          default: "5128581"
+        - name: Content-Type
+          description: The media type of response
+          in: header
+          required: false
+          type: string
+          enum:
+            - application/xml
+            - application/json
+            - application/json;charset=UTF-8
 
 definitions:
   City:

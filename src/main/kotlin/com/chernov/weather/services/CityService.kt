@@ -18,9 +18,14 @@ interface CityService {
     fun findAll(): Flux<City>
 
     /**
-     *  Returns the city of the given [name] from the saved list
+     *  Returns the city of the given [name]
      */
     fun findOneByName(name: String): Mono<City>
+
+    /**
+     *  Returns the city of the given [gid]
+     */
+    fun findOneByGlobId(gid: Long): Mono<City>
 
     /**
      *  Inserts the city in the saved list from [cityDto] json object

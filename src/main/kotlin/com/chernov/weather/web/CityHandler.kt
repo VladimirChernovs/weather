@@ -1,6 +1,7 @@
 package com.chernov.weather.web
 
 import com.chernov.weather.domain.dto.CityDTO
+import com.chernov.weather.domain.entities.City
 import com.chernov.weather.services.CityService
 import com.chernov.weather.services.WeatherService
 import com.chernov.weather.web.common.validate
@@ -37,7 +38,7 @@ class CityHandler(private val env: Environment,
      */
     fun findOneByName(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         val cityName = getTheNameParameter(req)
-        getCity(cityName, req)
+        getCityBodyByName(cityName, req)
     }
 
     /**
@@ -45,23 +46,36 @@ class CityHandler(private val env: Environment,
      */
     fun findOneByNamePath(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         val cityName = req.pathVariable("name")
-        getCity(cityName, req)
+        getCityBodyByName(cityName, req)
     }
 
-    private fun getCity(cityName: String, req: ServerRequest): Mono<ServerResponse> {
+    /**
+     *  Get city by global id (from the site). [req] - server request
+     */
+    fun findOneByGlobId(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
+        val gid = req.pathVariable("gid")
+        val cityBody = cityService.findOneByGlobId(gid.toLong())
+        getCityEtc(req, cityBody)
+                .switchIfEmpty(weatherService.inCityByGlobId(gid, getMediaType(req).subtype))
+
+    }
+
+    private fun getCityBodyByName(cityName: String, req: ServerRequest): Mono<ServerResponse> {
         val cityBody = cityService.findOneByName(cityName)
-        val mediaType = getMediaType(req)
-        return cityBody.flatMap {
-            ok()
-                    .contentType(mediaType)
-                    .header("db-update-time", it.updateTime.toString())
-                    .body(cityBody.map { city ->
-                        when (mediaType) {
-                            MediaType.APPLICATION_XML -> city.weather.xml
-                            else -> city.weather.json
-                        }
-                    })
-        }.switchIfEmpty(weatherService.inCity(cityName, mediaType.subtype))
+        return getCityEtc(req, cityBody)
+                .switchIfEmpty(weatherService.inCityByName(cityName, getMediaType(req).subtype))
+    }
+
+    private fun getCityEtc(req: ServerRequest, cityBody: Mono<City>): Mono<ServerResponse> = cityBody.flatMap {
+        ok()
+                .contentType(getMediaType(req))
+                .header("db-update-time", it.updateTime.toString())
+                .body(cityBody.map { city ->
+                    when (getMediaType(req)) {
+                        MediaType.APPLICATION_XML -> city.weather.xml
+                        else -> city.weather.json
+                    }
+                })
     }
 
     /**
