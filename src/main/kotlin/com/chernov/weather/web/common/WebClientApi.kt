@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 
 /**
- * WebClient connections settings
+ * WebClient connection's settings
  */
 @Component
 class WebClientApi(private val properties: SiteProperties) {

@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling
 
+/**
+ *  Spring configuration
+ */
 @Configuration
 @EnableCaching
 @EnableScheduling

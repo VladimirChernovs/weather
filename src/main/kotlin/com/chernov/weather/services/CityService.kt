@@ -20,7 +20,7 @@ interface CityService {
     /**
      *  Returns the city of the given [name] from the saved list
      */
-    fun findOne(name: String): Mono<City>
+    fun findOneByName(name: String): Mono<City>
 
     /**
      *  Inserts the city in the saved list from [cityDto] json object

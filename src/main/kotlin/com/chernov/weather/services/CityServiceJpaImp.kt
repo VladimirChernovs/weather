@@ -3,6 +3,7 @@ package com.chernov.weather.services
 import com.chernov.weather.domain.dto.CityDTO
 import com.chernov.weather.domain.entities.City
 import com.chernov.weather.domain.repositories.CityJpaRepository
+import org.json.JSONObject
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +31,7 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
      *  Returns the city of the given [name] from the saved list
      */
     @Transactional(readOnly = true)
-    override fun findOne(name: String): Mono<City> = try {
+    override fun findOneByName(name: String): Mono<City> = try {
         just(cityRepository.findByName(name))
     } catch (e: EmptyResultDataAccessException) {
         empty()
@@ -63,7 +64,10 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
      */
     override fun updateCity(city: Mono<City>) {
         city.subscribe {
-            cityRepository.save(it)
+            if (cityRepository.existsCityByName(it.name)) {
+                it.cityId = (JSONObject(it.weather.json).get("id") as Int).toLong()
+                cityRepository.save(it)
+            }
         }
     }
 

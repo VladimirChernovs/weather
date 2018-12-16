@@ -1,6 +1,9 @@
 package com.chernov.weather.domain.dto
 
-data class WeatherDTO(val id: String, val dt: String, val clouds: Clouds, val coord: Coord, val wind: Wind,
+/**
+ *  Weather json structure (for future use)
+ */
+class WeatherDTO(val id: String, val dt: String, val clouds: Clouds, val coord: Coord, val wind: Wind,
                       val cod: String, val visibility: String, val sys: Sys, val name: String, val base: String,
                       val weather: Array<Weather>, val main: Main
 )

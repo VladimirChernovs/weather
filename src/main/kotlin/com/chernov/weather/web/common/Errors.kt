@@ -6,6 +6,9 @@ import org.springframework.web.reactive.function.server.ServerResponse.status
 import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
 
+/**
+ *  Errors
+ */
 data class Error(val code: Int, val messages: List<String>)
 
 fun badRequest(t: Throwable) = error(HttpStatus.BAD_REQUEST, t)

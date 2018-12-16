@@ -1,8 +1,6 @@
 package com.chernov.weather.domain.dto
 
 /**
- *  DTOs
+ *  DTO to get the json's body from POST request for city addition
  */
-data class CityDTO(val name: String)
-
-data class CityWeatherDTO(val cityId: Long, val json: String, val xml: String)
+class CityDTO(val name: String)

@@ -29,9 +29,9 @@ class CityHandler(private val weatherService: WeatherService,
     /**
      *  Get city by name. [req] - server request
      */
-    fun findOne(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
+    fun findOneByName(req: ServerRequest): Mono<ServerResponse> = validate.request(req) {
         val cityName = getTheNameParameter(req)
-        val cityBody = cityService.findOne(cityName)
+        val cityBody = cityService.findOneByName(cityName)
         val mediaType = getMediaType(req)
         cityBody.flatMap {
             ServerResponse.ok()

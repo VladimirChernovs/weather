@@ -3,11 +3,27 @@ package com.chernov.weather.domain.repositories
 import com.chernov.weather.domain.entities.City
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.util.*
 
+/**
+ *  JPA repository for city entity
+ */
 @Repository
 interface CityJpaRepository : JpaRepository<City, Long> {
-    fun findByCityId(id: Long?): Optional<City>
+
+    /**
+     *  Get city by [id]
+     */
+    fun findByCityId(id: Long): City
+
+    /**
+     *  Get city by [name]
+     */
     fun findByName(name: String): City
-    fun existsCityByName(city: String): Boolean
+
+
+    /**
+     *  Check city existence by [name]
+     */
+    fun existsCityByName(name: String): Boolean
+
 }
