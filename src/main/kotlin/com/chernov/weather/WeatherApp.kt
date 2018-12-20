@@ -7,11 +7,11 @@ import org.springframework.boot.runApplication
  *  Weather project
  */
 @SpringBootApplication
-class WeatherApplication
+class WeatherApp
 
 /**
  *  Start application
  */
 fun main(args: Array<String>) {
-    runApplication<WeatherApplication>(*args)
+    runApplication<WeatherApp>(*args)
 }

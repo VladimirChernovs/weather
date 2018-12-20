@@ -23,7 +23,7 @@ coming soon ...
 ## Run
 
 ```shell
-./gradlew run
+./gradlew bootRun
 ```
 
 # Test Task (Java-Kotlin)
