@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service
  *  Update weather service
  */
 @Service
-class UpdateService(private val cityService: CityService,
-                    private val weatherService: WeatherService) {
+class UpdateService(private val cityService: CityService, private val weatherService: WeatherService) {
     /**
      *  Scheduled weather's update
      */

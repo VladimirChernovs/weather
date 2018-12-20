@@ -1,6 +1,5 @@
 package com.chernov.weather.web.common
 
-
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
@@ -15,4 +14,3 @@ class SiteProperties {
     lateinit var path: String
     var timeout: Int = 0
 }
-

@@ -20,10 +20,8 @@ interface CityJpaRepository : JpaRepository<City, Long> {
      */
     fun findByName(name: String): City
 
-
     /**
      *  Check city existence by [name]
      */
     fun existsCityByName(name: String): Boolean
-
 }

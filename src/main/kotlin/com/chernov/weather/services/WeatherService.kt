@@ -16,9 +16,7 @@ import reactor.core.publisher.Mono
  * API for weather site
  */
 @Service
-class WeatherService(private val properties: SiteProperties,
-                     private val webClientApi: WebClientApi) {
-
+class WeatherService(private val properties: SiteProperties, private val webClientApi: WebClientApi) {
     /**
      *  Get weather from the site
      *  [city] - city name
@@ -64,5 +62,4 @@ class WeatherService(private val properties: SiteProperties,
             city.copy(weather = Weather(n.t1, n.t2))
         }
     }
-
 }

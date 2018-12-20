@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Arrays
 
 /**
  * Aspect for logging execution of service and repository Spring components.
@@ -44,7 +44,7 @@ class LoggingAspect(private val env: Environment) {
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice
-     * @param e         exception
+     * @param e exception
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     fun logAfterThrowing(joinPoint: JoinPoint, e: Throwable) {

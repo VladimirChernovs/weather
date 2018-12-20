@@ -38,5 +38,4 @@ class AppApiUriInformer(private val env: Environment) : ApplicationRunner {
                 env.getProperty("server.port"),
                 env.activeProfiles)
     }
-
 }

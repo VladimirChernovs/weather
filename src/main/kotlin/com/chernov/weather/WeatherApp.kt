@@ -15,5 +15,3 @@ class WeatherApplication
 fun main(args: Array<String>) {
     runApplication<WeatherApplication>(*args)
 }
-
-

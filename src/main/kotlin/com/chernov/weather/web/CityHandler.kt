@@ -15,15 +15,12 @@ import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
 import java.net.URI
 import java.net.URLEncoder
-import java.nio.charset.Charset
 
 /**
  *  Handle requests from router
  */
 @Component
-class CityHandler(private val env: Environment,
-                  private val weatherService: WeatherService,
-                  private val cityService: CityService) {
+class CityHandler(private val env: Environment, private val weatherService: WeatherService, private val cityService: CityService) {
 
     /**
      *  Get all cities. [req] - server request
@@ -70,7 +67,7 @@ class CityHandler(private val env: Environment,
     fun create(req: ServerRequest) = validate.request(req).withBody(CityDTO::class.java) {
         created(URI.create("http://localhost:${env.getProperty("server.port")}" +
                 "/city/${
-                (URLEncoder.encode(it.name, Charset.defaultCharset())).replace("+", "%20")
+                (URLEncoder.encode(it.name, String())).replace("+", "%20")
                 }"))
                 .body(cityService.addOne(it))
     }
@@ -101,5 +98,4 @@ class CityHandler(private val env: Environment,
     }
 
     private fun getTheNameParameter(req: ServerRequest) = req.queryParam("name").get()
-
 }

@@ -21,5 +21,4 @@ class ConfigApp {
 
     @Bean
     fun cityService(): CityService = cityServiceJpaImp
-
 }

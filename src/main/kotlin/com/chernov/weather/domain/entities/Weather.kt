@@ -9,11 +9,10 @@ import javax.persistence.Lob
  */
 @Embeddable
 data class Weather(
-        @Lob
-        @Column(name = "JSON")
-        val json: String
-        ,
-        @Lob
-        @Column(name = "XML")
-        val xml: String
+    @Lob
+    @Column(name = "JSON")
+    val json: String,
+    @Lob
+    @Column(name = "XML")
+    val xml: String
 )

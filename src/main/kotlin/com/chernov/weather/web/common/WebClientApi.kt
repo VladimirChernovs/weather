@@ -23,5 +23,4 @@ class WebClientApi(private val properties: SiteProperties) {
                 .clientConnector(ReactorClientHttpConnector(httpClient))
                 .build()
     }
-
 }

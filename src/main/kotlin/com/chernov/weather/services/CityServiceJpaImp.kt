@@ -74,6 +74,4 @@ class CityServiceJpaImp(private val cityRepository: CityJpaRepository) : CitySer
             }
         }
     }
-
 }
-
