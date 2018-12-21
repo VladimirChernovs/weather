@@ -66,9 +66,7 @@ class CityHandler(private val env: Environment, private val weatherService: Weat
      *  Create city by name. [req] - server request
      */
     fun create(req: ServerRequest) = validate.request(req).withBody(CityDTO::class.java) {
-        created(URI.create("http://localhost:${env.getProperty("server.port")}" +
-                "/api/city/${(URLEncoder.encode(it.name, Charset.defaultCharset())).replace("+", "%20")}"))
-                .body(cityService.addOne(it))
+        created(URI.create("http://localhost:${env.getProperty("server.port")}")).body(cityService.addOne(it))
     }
 
     /**

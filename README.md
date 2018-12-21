@@ -13,7 +13,6 @@ Clone this repo
 
 coming soon ...
 
-
 ## Build
 
 ```shell
@@ -24,6 +23,12 @@ coming soon ...
 
 ```shell
 ./gradlew bootRun
+```
+
+## Swagger UI (REST docs)
+
+```shell
+http://localhost:port
 ```
 
 # Test Task (Java-Kotlin)
