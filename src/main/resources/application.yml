@@ -1,17 +1,27 @@
+spring.application.name: Weather project
+server.port: 8080
 
-update.delay: 7000
+update.delay: 27000
 
 logging:
-    level:
-        com.black.weatherflux: INFO
+  level:
+    com.chernov.weather: DEBUG
 
 spring:
-    jpa:
-    hibernate.ddl-auto: create-drop
+  # Caffeine configuration
+  cache:
+    cache-names: weather
+    caffeine:
+      spec: maximumSize=100, expireAfterWrite=25s
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 #        hibernate.ddl-auto: none
 
 site:
-    host: api.openweathermap.org
-    path: data/2.5/weather
-    appid: 8cb969812b8e2b288af6925d650b2751
-    timeout: 1000
+  host: api.openweathermap.org
+  path: data/2.5/weather
+  appid: 8cb969812b8e2b288af6925d650b2751
+  timeout: 1000
+
