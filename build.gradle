@@ -8,6 +8,7 @@ buildscript {
     repositories {
         jcenter()
         maven { url "https://repo.spring.io/milestone" }
+        mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
@@ -78,6 +79,10 @@ dependencyManagement {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -109,10 +114,11 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('com.h2database:h2')
 
+    // tests
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('io.projectreactor:reactor-test')
-
-    testImplementation('io.projectreactor:reactor-test')
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine")
+    testCompile('org.springframework.boot:spring-boot-starter-test') {
+        exclude module: 'junit'
+    }
+    testImplementation('org.junit.jupiter:junit-jupiter-api')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }

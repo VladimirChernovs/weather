@@ -1,8 +1,23 @@
-update.delay: 7000
+spring.application.name: Weather project
+server.port: 8080
+
+update.delay: 27000
+
+logging:
+  level:
+    com.chernov.weather: DEBUG
 
 spring:
+  # Caffeine configuration
+  cache:
+    cache-names: weather
+    caffeine:
+      spec: maximumSize=100, expireAfterWrite=25s
   jpa:
-    hibernate.ddl-auto: create-drop
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+#        hibernate.ddl-auto: none
 
 site:
   host: api.openweathermap.org
